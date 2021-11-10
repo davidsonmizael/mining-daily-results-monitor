@@ -1,0 +1,5 @@
+flexpool:
+  base_url: https://api.flexpool.io/v2/
+  coin: ETH
+  wallet: "YOUR_WALLET" #needs to be inside quotes
+  value: brl
