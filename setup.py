@@ -4,7 +4,6 @@ except ImportError:
     from distutils.core import setup
 
 dependencies = [
-    'flask',
     'python-dotenv',
     'pyyaml',
     'requests',

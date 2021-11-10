@@ -15,7 +15,9 @@ from oauth2client.service_account import ServiceAccountCredentials
 
 start = datetime.now()
 
-logging.config.fileConfig('config/logger.conf', defaults={'logfilename': f'logs/run-{start.strftime("%Y%m%d%H%M%S")}.log'})
+project_base = os.path.dirname(os.path.realpath(__file__))
+
+logging.config.fileConfig(project_base + '/config/logger.conf', defaults={'logfilename': f'{project_base}/logs/run-{start.strftime("%Y%m%d%H%M%S")}.log'})
 logger = logging.getLogger('mainIntegration')
 #loading .env 
 load_dotenv()
