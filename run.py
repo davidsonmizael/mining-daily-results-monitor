@@ -24,7 +24,7 @@ load_dotenv()
 
 #loading project settings
 config = {}
-with open('config/settings.yml') as fs:
+with open(project_base + '/config/settings.yml') as fs:
     try:
         config = yaml.safe_load(fs)
     except yaml.YAMLError:
@@ -32,7 +32,7 @@ with open('config/settings.yml') as fs:
         exit()
 
 scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']  
-creds = ServiceAccountCredentials.from_json_keyfile_name('credentials.json', scope)
+creds = ServiceAccountCredentials.from_json_keyfile_name(project_base + '/credentials.json', scope)
 
 description="""
     [############################################################]
@@ -49,14 +49,15 @@ if __name__ == '__main__':
         flexpool = Flexpool(logger, config['flexpool']['base_url'], config['flexpool']['wallet'], config['flexpool']['coin'])
         
         balance = flexpool.check_balance()['content']
-        balance = ether_to_eth(balance['result']['balance'])
+        balance = balance['result']['balance']
+        eth_balance = ether_to_eth(balance)
         logger.info(f"Current balance: {balance}")
 
         current_date = start.strftime("%d/%m/%Y")
 
         gs = GoogleSheet(creds)
         sheet_instance = gs.get_sheet('Crypto Mining', 3)
-        sheet_instance.append_row([current_date, str(balance)])
+        sheet_instance.append_row([current_date, eth_balance], value_input_option='USER_ENTERED')
 
         end = datetime.now()
         logger.info(f'Script finished. Time elapsed: {end - start}.')
